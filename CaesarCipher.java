@@ -1,16 +1,16 @@
-
 public class CaesarCipher {
     public static String encrypt(String plainText, int shift) {
-        StringBuilder encryptedText = new StringBuilder();
-        for (char c : plainText.toCharArray()) {
+        char[] encryptedText = new char[plainText.length()];
+        for (int i = 0; i < plainText.length(); i++) {
+            char c = plainText.charAt(i);
             if (Character.isLetter(c)) {
                 char base = Character.isLowerCase(c) ? 'a' : 'A';
-                encryptedText.append((char) (((c - base + shift) % 26) + base));
+                encryptedText[i] = (char) (((c - base + shift) % 26) + base);
             } else {
-                encryptedText.append(c);
+                encryptedText[i] = c;
             }
         }
-        return encryptedText.toString();
+        return new String(encryptedText);
     }
 
     public static String decrypt(String encryptedText, int shift) {
