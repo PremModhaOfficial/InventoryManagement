@@ -1,50 +1,17 @@
+package main.java;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 
-class Item {
-    private String name;
-    private int quantity;
-    private double price;
-    private Date expirationDate;
 
-    public Item(String name, int quantity, double price, Date expirationDate) {
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.expirationDate = expirationDate;
-    }
-
-    // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-}
 
 public class InventoryManagementSystem {
-    private static Map<String, Item> inventory = new HashMap<>();
-    private static PriorityQueue<Item> expiryQueue = new PriorityQueue<>(Comparator.comparing(Item::getExpirationDate));
-    private static List<String> transactionHistory = new ArrayList<>();
+    private static MyHashMap<String, Product> inventory = new MyHashMap<>();
+    private static PriorityQueue<Product> expiryQueue = new PriorityQueue<>(Comparator.comparing(Product::getExpirationDate));
+    private static MyLinkedList<String> transactionHistory = new MyLinkedList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
+
         while (true) {
             System.out.println("\nInventory Management System");
             System.out.println("1. Add Item");
@@ -56,10 +23,10 @@ public class InventoryManagementSystem {
             System.out.println("7. View Transaction History");
             System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
-            
+
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline
-            
+
             switch (choice) {
                 case 1:
                     addItem(scanner);
@@ -104,6 +71,7 @@ public class InventoryManagementSystem {
     System.out.print("Enter item price: ");
     double price = scanner.nextDouble();
     scanner.nextLine(); // Consume the newline
+        /**
     System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
     String dateString = scanner.nextLine();
     Date expirationDate = null;
@@ -115,7 +83,8 @@ public class InventoryManagementSystem {
             System.out.println("Invalid date format. Item will be added without an expiration date.");
         }
     }
-    Item newItem = new Item(name, quantity, price, expirationDate);
+         */
+    Product newItem = new Product(name, quantity, price, expirationDate);
     inventory.put(name, newItem);
     if (expirationDate != null) {
         expiryQueue.offer(newItem);
@@ -133,7 +102,7 @@ public class InventoryManagementSystem {
     }
     System.out.print("Enter new quantity: ");
     int newQuantity = scanner.nextInt();
-    Item item = inventory.get(name);
+    Product item = inventory.get(name);
     item.setQuantity(newQuantity);
     System.out.println("Item updated successfully.");
     }
@@ -148,7 +117,7 @@ public class InventoryManagementSystem {
         }
         inventory.remove(name);
         // Remove from the expiry queue if it has an expiration date
-        Item removedItem = inventory.get(name);
+        Product removedItem = inventory.get(name);
         if (removedItem.getExpirationDate() != null) {
             expiryQueue.remove(removedItem);
         }
@@ -161,7 +130,7 @@ public class InventoryManagementSystem {
             System.out.println("Inventory is empty.");
         } else {
             System.out.println("Inventory:");
-            for (Item item : inventory.values()) {
+            for (Product item : inventory.values()) {
                 System.out.println("Name: " + item.getName());
                 System.out.println("Quantity: " + item.getQuantity());
                 System.out.println("Price: $" + item.getPrice());
@@ -179,28 +148,28 @@ public class InventoryManagementSystem {
     System.out.println("1. Sale (Decrease quantity)");
     System.out.println("2. Purchase (Increase quantity)");
     System.out.print("Enter transaction type (1 for Sale, 2 for Purchase): ");
-    
+
     int transactionType = scanner.nextInt();
     scanner.nextLine(); // Consume the newline
-    
+
     if (transactionType != 1 && transactionType != 2) {
         System.out.println("Invalid transaction type.");
         return;
     }
-    
+
     System.out.print("Enter item name: ");
     String itemName = scanner.nextLine();
-    
+
     if (!inventory.containsKey(itemName)) {
         System.out.println("Item not found in the inventory.");
         return;
     }
-    
-    Item item = inventory.get(itemName);
-    
+
+    Product item = inventory.get(itemName);
+
     System.out.print("Enter quantity: ");
     int quantity = scanner.nextInt();
-    
+
     if (transactionType == 1) {
         if (quantity <= 0 || quantity > item.getQuantity()) {
             System.out.println("Invalid quantity for sale.");
@@ -218,7 +187,7 @@ public class InventoryManagementSystem {
         item.setQuantity(item.getQuantity() + quantity);
         System.out.println(quantity + " units of " + itemName + " purchased.");
     }
-    
+
     // Record the transaction in history
     String transactionDescription = (transactionType == 1 ? "Sale: " : "Purchase: ") + quantity + " units of " + itemName;
     transactionHistory.add(transactionDescription);
@@ -229,7 +198,7 @@ public class InventoryManagementSystem {
         System.out.println("Items nearing expiration:");
         Date currentDate = new Date();
         while (!expiryQueue.isEmpty()) {
-            Item item = expiryQueue.peek();
+            Product item = expiryQueue.peek();
             if (item.getExpirationDate().after(currentDate)) {
                 break;
             }

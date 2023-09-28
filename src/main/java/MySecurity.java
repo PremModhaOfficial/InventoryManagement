@@ -23,6 +23,9 @@ public class MySecurity {
         return encrypt(encryptedText, 26 - shift); // Decryption is just shifting in the opposite direction
     }
 
+    /**
+     * This is a for test case for Encryption.
+     */
     public static void main(String[] args) {
         String originalText = "Hello, World!";
         int shift = 3;
