@@ -4,17 +4,20 @@ package main.java;
  * Changed Product class
  */
 public class Product {
-    private int id;
-    private String name;
-    private double price;
-    private int quantity;
-    private MyDate expirationDate;
+    public int id;
+    public static int ID_END = 1000;
+    public String name;
+    public double price;
+    public int quantity;
+    public String category;
+    public MyDate expirationDate;
 
-
-    public Product(String name, int quantity, double price, MyDate expirationDate) {
+    public Product(String name, double price, int quantity, String category, MyDate expirationDate) {
+        this.id = ID_END++;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.category = category;
         this.expirationDate = expirationDate;
     }
 
@@ -56,13 +59,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Product \n" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", expirationDate='" + expirationDate + '\'' +
-                '}';
+                "\nname='" + name + '\'' +
+                "\ncategory='" + category + '\'' +
+                "\nprice=" + price +
+                "\nquantity=" + quantity +
+                "\nexpirationDate='" + expirationDate + '\'';
     }
 
     public void decreaseStock(int amount) {

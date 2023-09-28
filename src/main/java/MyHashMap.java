@@ -5,7 +5,7 @@ import java.util.ArrayList;
 class MapDemo{
     public static void main(String[] args) {
         MyHashMap<Integer,Product> map = new MyHashMap<>();
-        map.put(1,new Product(null,1,1,new MyDate("2000-01-01")));
+        map.put(1,new Product(null,1,1,"dummy",new MyDate("2000-01-01")));
         System.out.println(map.containsKey(1));
         map.display();
     }
@@ -55,13 +55,17 @@ public class MyHashMap<K, V> {
     }
 
     public void display(String Divider) {
+        System.out.println(Divider);
+        System.out.println(Divider);
         for (int i = 0; i < capacity; i++) {
             Node<K, V> node = table[i];
             while (node != null) {
-                System.out.print("Key: " + node.key + ", Value: " + node.value + "\n" +Divider);
+                System.out.print(node.key + "\n" + node.value + "\n" + Divider + "\n");
                 node = node.next;
             }
         }
+        System.out.println(Divider);
+        System.out.println(Divider);
     }
 
 
@@ -77,7 +81,10 @@ public class MyHashMap<K, V> {
     }
 
     private int hash(K key) {
-        return key.hashCode() % capacity;
+        int h = key.hashCode();
+        if (h < 0)
+            h *= (-1);
+        return h % capacity;
     }
 
     public void put(K key, V value) {

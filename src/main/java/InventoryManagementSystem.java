@@ -16,7 +16,9 @@ public class InventoryManagementSystem {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+//        currentDate = new MyDate(scanner.nextLine());
+        currentDate = new MyDate("2000-01-01");
+        addDummyItems();
         while (true) {
             System.out.println("\nInventory Management System");
             System.out.println("1. Add Item");
@@ -29,38 +31,89 @@ public class InventoryManagementSystem {
             System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline
+            String choice = scanner.nextLine();
 
             switch (choice) {
-                case 1:
+                case "0":
+                    nextDay();
+                    break;
+                case "1":
                     addItem();
                     break;
-                case 2:
+                case "2":
                     updateItem();
                     break;
-                case 3:
+                case "3":
                     removeItem();
                     break;
-                case 4:
+                case "4":
                     listItems();
                     break;
-                case 5:
+                case "5":
                     performTransaction();
                     break;
-                case 6:
+                case "6":
                     checkExpiry();
                     break;
-                case 7:
+                case "7":
                     viewTransactionHistory();
                     break;
-                case 8:
+                case "8":
                     System.out.println("Exiting...");
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+
+    private static void addDummyItems() {
+        inventory.put("Eraser",
+                new Product("Eraser", 0.79, 250, "Stationary", new MyDate(2023, 07, 10)));
+        inventory.put("Ruler",
+                new Product("Ruler", 1.19, 350, "Stationary", new MyDate(2023, 9, 20)));
+        inventory.put("Highlighter",
+                new Product("Highlighter", 0.89, 300, "Stationary", new MyDate(2023, 10, 25)));
+        inventory.put("Paper Clips",
+                new Product("Paper Clips", 1.29, 200, "Stationary", new MyDate(2023, 11, 30)));
+        inventory.put("Binder Clips",
+                new Product("Binder Clips", 1.99, 150, "Stationary", new MyDate(2023, 12, 05)));
+        inventory.put("Sticky Notes",
+                new Product("Sticky Notes", 2.49, 100, "Stationary", new MyDate(2024, 01, 10)));
+        inventory.put("Tape Dispenser",
+                new Product("Tape Dispenser", 3.99, 75, "Stationary", new MyDate(2024, 02, 15)));
+        inventory.put("Staple Remover",
+                new Product("Staple Remover", 2.99, 50, "Stationary", new MyDate(2024, 03, 20)));
+        inventory.put("Correction Tape",
+                new Product("Correction Tape", 2.79, 100, "Stationary", new MyDate(2024 ,04 ,25)));
+        inventory.put("T-Shirt",
+                new Product("T-Shirt", 14.99, 200, "Clothes", new MyDate(2023, 07, 10)));
+        inventory.put("Jeans",
+                new Product("Jeans", 39.99, 150, "Clothes", new MyDate(2023, 8, 15)));
+        inventory.put("Sweater",
+                new Product("Sweater", 29.99, 100, "Clothes", new MyDate(2023, 9, 20)));
+        inventory.put("Sneakers",
+                new Product("Sneakers", 49.99, 75, "Shoes", new MyDate(2023, 10, 25)));
+        inventory.put("Boots",
+                new Product("Boots", 59.99, 50, "Shoes", new MyDate(2023, 11, 30)));
+        inventory.put("Sandals",
+                new Product("Sandals", 19.99, 100, "Shoes", new MyDate(2023, 12, 05)));
+        inventory.put("Wrist Watch",
+                new Product("Wrist Watch", 199.99, 30, "Accessories", new MyDate(2024, 01, 10)));
+        inventory.put("Necklace",
+                new Product("Necklace", 149.99, 20, "Accessories", new MyDate(2024, 02, 15)));
+        inventory.put("Earrings",
+                new Product("Earrings", 79.99, 50, "Accessories", new MyDate(2024 ,03 ,20)));
+        inventory.put("Bracelet",
+                new Product("Bracelet", 89.99, 40, "Accessories", new MyDate(2024 ,04 ,25)));
+        //20 dummy products
+    }
+
+    private static void nextDay() {
+        currentDate.nextDay();
+        inventory.get(String.valueOf((int) (Math.random() * 100))).decreaseStock(((int) (Math.random() * 15)));
+
+
     }
 
     private static void addItem() {
@@ -77,14 +130,17 @@ public class InventoryManagementSystem {
         double price = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline
 
-        System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
+        System.out.print("Enter item Category: ");
+        String category = scanner.nextLine();
 
+        System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
         String expirationDate = scanner.nextLine();
+
         if (expirationDate.equals("") || expirationDate == null) {
             expirationDate = "NEVER_EXPIRES";
         }
         MyDate expirationDateObject = new MyDate(expirationDate);
-        Product newItem = new Product(name, quantity, price, expirationDateObject);
+        Product newItem = new Product(name, price, quantity, category, expirationDateObject);
         inventory.put(name, newItem);
         expiryDateHashMap.put(expirationDateObject, newItem);
         System.out.println("Item added to the inventory.");
@@ -113,9 +169,9 @@ public class InventoryManagementSystem {
             System.out.println("Item does not exist in the inventory.");
             return;
         }
-        inventory.remove(name);
         // Remove from the expiry queue if it has an expiration date
         Product removedItem = inventory.get(name);
+        inventory.remove(name);
         if (removedItem.getExpirationDate() != null) {
             expiryDateHashMap.removeValue(removedItem);
         }
@@ -133,7 +189,7 @@ public class InventoryManagementSystem {
     }
 
     /**
-     * todo DATE-CLASS  if (item.getExpirationDate() != null) {
+     * todo DATE-CLASS if (item.getExpirationDate() != null) {
      * SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
      * System.out.println("Expiration Date: " + dateFormat.format(item.getExpirationDate()));
      */
@@ -164,6 +220,7 @@ public class InventoryManagementSystem {
 
         System.out.print("Enter quantity: ");
         int quantity = scanner.nextInt();
+        scanner.nextLine();
 
         if (transactionType == 1) {
             if (quantity <= 0 || quantity > item.getQuantity()) {
@@ -200,7 +257,13 @@ public class InventoryManagementSystem {
     private static void sortByDateAndDisplay(MyHashMap<MyDate, Product> expiryDateHashMap) {
         for (int i = 0; i < expiryDateHashMap.capacity; i++) {
             MyHashMap.Node<MyDate, Product> n = expiryDateHashMap.getTable()[i];
-            MyDate productExpiry = n.value.getExpirationDate();
+            MyDate productExpiry;
+            while (n != null) {
+                productExpiry = n.value.getExpirationDate();
+                System.out.println(productExpiry + " " + n.value);
+                n = n.next;
+            }
+
         }
     }
 
