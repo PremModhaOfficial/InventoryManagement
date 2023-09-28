@@ -5,7 +5,7 @@ import java.util.ArrayList;
 class MapDemo{
     public static void main(String[] args) {
         MyHashMap<Integer,Product> map = new MyHashMap<>();
-        map.put(1,new Product(null,1,1,"1"));
+        map.put(1,new Product(null,1,1,new MyDate("2000-01-01")));
         System.out.println(map.containsKey(1));
         map.display();
     }
@@ -15,7 +15,7 @@ public class MyHashMap<K, V> {
     private static final int DEFAULT_CAPACITY = 100;
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    private int capacity;
+    public int capacity;
     private float loadFactor;
     public int size;
 
@@ -58,11 +58,12 @@ public class MyHashMap<K, V> {
         for (int i = 0; i < capacity; i++) {
             Node<K, V> node = table[i];
             while (node != null) {
-                System.out.print("Key: " + node.key + ", Value: " + node.value + "/n" +Divider);
+                System.out.print("Key: " + node.key + ", Value: " + node.value + "\n" +Divider);
                 node = node.next;
             }
         }
     }
+
 
     public static class Node<K, V> {
         K key;
@@ -129,6 +130,21 @@ public class MyHashMap<K, V> {
         }
     }
 
+    public void removeValue(V name) {
+        for (int i = 0; i < capacity; i++) {
+            Node<K, V> node = table[i];
+            Node<K, V> prev = null;
+            while (node != null) {
+                if (name.equals(node.value)) {
+                    prev.next = node.next;
+                    size--;
+                    return;
+                }
+                prev = node;
+                node = node.next;
+            }
+        }
+    }
 
     private void resize() {
         int newCapacity = capacity * 2;

@@ -8,10 +8,10 @@ public class Product {
     private String name;
     private double price;
     private int quantity;
-    private String expirationDate;
+    private MyDate expirationDate;
 
 
-    public Product(String name, int quantity, double price, String expirationDate) {
+    public Product(String name, int quantity, double price, MyDate expirationDate) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -34,7 +34,7 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(MyDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -73,7 +73,7 @@ public class Product {
         }
     }
 
-    public String getExpirationDate() {
+    public MyDate getExpirationDate() {
         return expirationDate;
     }
 }

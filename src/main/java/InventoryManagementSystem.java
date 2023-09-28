@@ -1,6 +1,5 @@
 package main.java;
 
-import java.util.Date;
 import java.util.Scanner;
 
 
@@ -10,11 +9,13 @@ import java.util.Scanner;
 
 public class InventoryManagementSystem {
     private static MyHashMap<String, Product> inventory = new MyHashMap<>();
-    private static MyHashMap<String, Product> expiryDate = new MyHashMap<>();
+    private static MyHashMap<MyDate, Product> expiryDateHashMap = new MyHashMap<>();
     protected static MyLinkedList<Transaction> transactionHistory = new MyLinkedList<>();
 
+    static MyDate currentDate;
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("\nInventory Management System");
@@ -33,19 +34,19 @@ public class InventoryManagementSystem {
 
             switch (choice) {
                 case 1:
-                    addItem(scanner);
+                    addItem();
                     break;
                 case 2:
-                    updateItem(scanner);
+                    updateItem();
                     break;
                 case 3:
-                    removeItem(scanner);
+                    removeItem();
                     break;
                 case 4:
                     listItems();
                     break;
                 case 5:
-                    performTransaction(scanner);
+                    performTransaction();
                     break;
                 case 6:
                     checkExpiry();
@@ -62,7 +63,7 @@ public class InventoryManagementSystem {
         }
     }
 
-    private static void addItem(Scanner scanner) {
+    private static void addItem() {
         // Implement item addition logic
         System.out.print("Enter item name: ");
         String name = scanner.nextLine();
@@ -75,29 +76,21 @@ public class InventoryManagementSystem {
         System.out.print("Enter item price: ");
         double price = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline
-        /**
-         System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
-         String dateString = scanner.nextLine();
-         Date expirationDate = null;
-         if (!dateString.isEmpty()) {
-         try {
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-         expirationDate = dateFormat.parse(dateString);
-         } catch (Exception e) {
-         System.out.println("Invalid date format. Item will be added without an expiration date.");
-         }
-         }
-         */
+
+        System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
+
         String expirationDate = scanner.nextLine();
-        Product newItem = new Product(name, quantity, price, expirationDate);
-        inventory.put(name, newItem);
-        if (expirationDate != null) {
-            expiryDate.put(expirationDate, newItem);
+        if (expirationDate.equals("") || expirationDate == null) {
+            expirationDate = "NEVER_EXPIRES";
         }
+        MyDate expirationDateObject = new MyDate(expirationDate);
+        Product newItem = new Product(name, quantity, price, expirationDateObject);
+        inventory.put(name, newItem);
+        expiryDateHashMap.put(expirationDateObject, newItem);
         System.out.println("Item added to the inventory.");
     }
 
-    private static void updateItem(Scanner scanner) {
+    private static void updateItem() {
         // Implement item update logic
         System.out.print("Enter item name to update: ");
         String name = scanner.nextLine();
@@ -112,7 +105,7 @@ public class InventoryManagementSystem {
         System.out.println("Item updated successfully.");
     }
 
-    private static void removeItem(Scanner scanner) {
+    private static void removeItem() {
         // Implement item removal logic
         System.out.print("Enter item name to remove: ");
         String name = scanner.nextLine();
@@ -124,7 +117,7 @@ public class InventoryManagementSystem {
         // Remove from the expiry queue if it has an expiration date
         Product removedItem = inventory.get(name);
         if (removedItem.getExpirationDate() != null) {
-            expiryDate.remove(removedItem.getName());
+            expiryDateHashMap.removeValue(removedItem);
         }
         System.out.println("Item removed from the inventory.");
     }
@@ -136,15 +129,16 @@ public class InventoryManagementSystem {
         } else {
             System.out.println("Inventory:");
             inventory.display("-----------------------------");
-/**todo DATE-CLASS                 if (item.getExpirationDate() != null) {
- SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
- System.out.println("Expiration Date: " + dateFormat.format(item.getExpirationDate()));
- */
-
         }
     }
 
-    private static void performTransaction(Scanner scanner) {
+    /**
+     * todo DATE-CLASS  if (item.getExpirationDate() != null) {
+     * SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+     * System.out.println("Expiration Date: " + dateFormat.format(item.getExpirationDate()));
+     */
+
+    private static void performTransaction() {
         System.out.println("Transaction Types:");
         System.out.println("1. Sale (Decrease quantity)");
         System.out.println("2. Purchase (Increase quantity)");
@@ -190,26 +184,23 @@ public class InventoryManagementSystem {
         }
 
         // Record the transaction in history
+
         Transaction transactionDescription = new Transaction(
-                itemName, quantity * item.getPrice(), quantity, transactionType + ""
+                itemName, quantity * item.getPrice(), quantity, (transactionType == 1 ? "Sale: " : "Purchase: ")
         );
-//            (transactionType == 1 ? "Sale: " : "Purchase: ") + quantity + " units of " + itemName;
         transactionHistory.add(transactionDescription);
     }
 
     private static void checkExpiry() {
         // Implement expiry checking logic
         System.out.println("Items nearing expiration:");
-        Date currentDate = new Date();
-        while (!expiryDate.isEmpty()) {
-            Product item = expiryDate.peek();
-            if (item.getExpirationDate().after(currentDate)) {
-                break;
-            }
-            System.out.println("Name: " + item.getName());
-            System.out.println("Expiration Date: " + new SimpleDateFormat("yyyy-MM-dd").format(item.getExpirationDate()));
-            System.out.println("-------------------");
-            expiryDate.removeFirst();
+        sortByDateAndDisplay(expiryDateHashMap);
+    }
+
+    private static void sortByDateAndDisplay(MyHashMap<MyDate, Product> expiryDateHashMap) {
+        for (int i = 0; i < expiryDateHashMap.capacity; i++) {
+            MyHashMap.Node<MyDate, Product> n = expiryDateHashMap.getTable()[i];
+            MyDate productExpiry = n.value.getExpirationDate();
         }
     }
 
