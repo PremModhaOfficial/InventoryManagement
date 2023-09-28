@@ -1,4 +1,6 @@
-public class CaesarCipher {
+package main.java;
+
+public class MySecurity {
     public static String encrypt(String plainText, int shift) {
         char[] encryptedText = new char[plainText.length()];
         for (int i = 0; i < plainText.length(); i++) {
