@@ -1,7 +1,8 @@
 package main.java;
 
-import java.util.Date;
-
+/**
+ * Changed Product class
+ */
 public class Product {
     private int id;
     private String name;
@@ -38,19 +39,19 @@ public class Product {
     }
 
     public int getId() {
-       return id;
+        return id;
     }
 
     public String getName() {
-       return name;
+        return name;
     }
 
     public double getPrice() {
-       return price;
+        return price;
     }
 
     public int getQuantity() {
-       return quantity;
+        return quantity;
     }
 
     @Override
@@ -65,10 +66,10 @@ public class Product {
     }
 
     public void decreaseStock(int amount) {
-       if (quantity >= amount) {
-          quantity -= amount;
-       } else {
-          System.out.println("Insufficient stock for " + name);
-       }
+        if (quantity >= amount) {
+            quantity -= amount;
+        } else {
+            System.out.println("Insufficient stock for " + name);
+        }
     }
 }

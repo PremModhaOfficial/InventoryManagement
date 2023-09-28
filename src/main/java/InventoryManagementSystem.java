@@ -3,6 +3,9 @@ package main.java;
 import java.util.*;
 
 
+/**
+ * comment this whole code before running
+ */
 
 public class InventoryManagementSystem {
     private static MyHashMap<String, Product> inventory = new MyHashMap<>();

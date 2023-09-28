@@ -3,6 +3,7 @@ package main.java;
 /**
  * MySecurity class
  * helps us encrypt passwords or any string we want.
+ *
  */
 public class MySecurity {
     public static String encrypt(String plainText, int shift) {
