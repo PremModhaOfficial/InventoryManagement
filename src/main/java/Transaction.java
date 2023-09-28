@@ -46,7 +46,7 @@ class Transaction {
     }
 }
 
-// New PErform Transaction.
+// New Perform Transaction Method as we made Transaction Class.
 
 /*private static void performTransaction(Scanner scanner) {
     System.out.println("Transaction Types:");
