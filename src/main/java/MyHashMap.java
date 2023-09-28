@@ -1,5 +1,7 @@
 package main.java;
 
+import java.util.ArrayList;
+
 class MapDemo{
     public static void main(String[] args) {
         MyHashMap<Integer,Product> map = new MyHashMap<>();
@@ -15,7 +17,12 @@ public class MyHashMap<K, V> {
 
     private int capacity;
     private float loadFactor;
-    private int size;
+    public int size;
+
+    public Node<K, V>[] getTable() {
+        return table;
+    }
+
     private Node<K, V>[] table;
 
     public MyHashMap() {
@@ -40,18 +47,24 @@ public class MyHashMap<K, V> {
         return false;
     }
     public void display() {
+        display("");
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void display(String Divider) {
         for (int i = 0; i < capacity; i++) {
             Node<K, V> node = table[i];
             while (node != null) {
-                System.out.println("Key: " + node.key + ", Value: " + node.value);
+                System.out.print("Key: " + node.key + ", Value: " + node.value + "/n" +Divider);
                 node = node.next;
             }
         }
     }
 
-
-
-    private static class Node<K, V> {
+    public static class Node<K, V> {
         K key;
         V value;
         Node<K, V> next;

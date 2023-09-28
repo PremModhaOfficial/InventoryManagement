@@ -72,4 +72,8 @@ public class Product {
             System.out.println("Insufficient stock for " + name);
         }
     }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
 }

@@ -43,6 +43,24 @@ class MyLinkedList<T> {
         return null;
     }
 
+    public int getLength() {
+        int l=0;
+        Node last = head;
+        while (last!=null){
+            l++;
+            last = last.next;
+        }
+        return l;
+    }
+
+    public void display() {
+        Node last = head;
+        while (last != null) {
+            System.out.println(last);
+            last = last.next;
+        }
+    }
+
     private static class Node<T> {
         private T data;
         private Node<T> next;

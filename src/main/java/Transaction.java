@@ -1,6 +1,11 @@
 package main.java;
 
+import java.util.Scanner;
+
+import static main.java.InventoryManagementSystem.transactionHistory;
+
 class Transaction {
+    static Scanner scanner = new Scanner(System.in);
     private static int nextTransactionId = 1000;
     private int transactionId;
     private String productName;
@@ -44,11 +49,13 @@ class Transaction {
                 ", Product Quantity: " + productQuantity +
                 ", Transaction Type: " + transactionType;
     }
+
 }
 
 // New Perform Transaction Method as we made Transaction Class.
 
-/*private static void performTransaction(Scanner scanner) {
+/*
+private static void performTransaction(Scanner scanner) {
     System.out.println("Transaction Types:");
     System.out.println("1. Sale (Decrease quantity)");
     System.out.println("2. Purchase (Increase quantity)");
