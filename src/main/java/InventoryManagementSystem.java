@@ -15,7 +15,7 @@ public class InventoryManagementSystem {
     static MyDate currentDate;
     static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void manage() {
 //        currentDate = new MyDate(scanner.nextLine());
         currentDate = new MyDate("2000-01-01");
         addDummyItems();
@@ -300,6 +300,7 @@ public class InventoryManagementSystem {
                 if (currentDate.greaterThan(n.key)) {
                     System.out.println(n.value.name + " has been expired and Will be removed now...");
                     inventory.remove(n.value.getName());
+                    expiryDateHashMap.remove(n.key);
                     expiredItemsCount++;
                 }
                 n = n.next;

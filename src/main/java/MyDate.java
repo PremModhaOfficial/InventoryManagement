@@ -1,8 +1,11 @@
 package main.java;
 
+import java.util.Scanner;
+
 public class MyDate {
     int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+    static Scanner scanner = new Scanner(System.in);
     int year, month, day;
     String YEAR_MONTH_DAY;
 
@@ -13,24 +16,42 @@ public class MyDate {
     public MyDate(String YYYY_MM_DD) {
 //      assigns respective year month and date
         YEAR_MONTH_DAY = YYYY_MM_DD;
-        if (YEAR_MONTH_DAY.equalsIgnoreCase("NEVER_EXPIRES"))
+        if (YEAR_MONTH_DAY.equalsIgnoreCase("NEVER_EXPIRES")) {
+            year = 0;
+            month = 0;
+            day = 0;
             return;
-        year = Integer.parseInt(YEAR_MONTH_DAY.split("-")[0]);
-        month = Integer.parseInt(YEAR_MONTH_DAY.split("-")[1]);
-        day = Integer.parseInt(YEAR_MONTH_DAY.split("-")[2]);
+        } else {
+            year = Integer.parseInt(YEAR_MONTH_DAY.split("-")[0]);
+            month = Integer.parseInt(YEAR_MONTH_DAY.split("-")[1]);
+            day = Integer.parseInt(YEAR_MONTH_DAY.split("-")[2]);
+        }
     }
 
     public MyDate(int year, int month, int day) {
         this(year + "-" + month + "-" + day);
     }
 
-    public MyDate nextDay() {
-        return validateDate(year,month,++day);
+    public static String validateDateString(String dateString) {
+        String[] arr = dateString.split("-");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 'a'; j <= 'z'; j++) {
+                if (arr[i].toLowerCase().contains((char) j + "")) {
+                    System.out.println("INVALID DATE RE-ENTER in 'yyyy-mm-dd' format");
+                    return validateDateString(scanner.nextLine());
+                }
+            }
+        }
+        return dateString;
     }
 
-    private MyDate validateDate(int year,int month,int day) {
-        if (validateDay(year,month,day).isValid())
-            return validateDay(year,month,day);
+    public MyDate nextDay() {
+        return validateDate(year, month, ++day);
+    }
+
+    private MyDate validateDate(int year, int month, int day) {
+        if (validateDay(year, month, day).isValid())
+            return validateDay(year, month, day);
         return this;
     }
 
@@ -43,19 +64,19 @@ public class MyDate {
             this.month -= 12;
             this.year++;
         }
-        return new MyDate(year,month,day);
+        return new MyDate(year, month, day);
     }
 
-    private MyDate validateDay(int year,int month,int day) {
+    private MyDate validateDay(int year, int month, int day) {
         if (month == 2 && isLeapYear(year) && day > 29) {
             month++;
             day -= 29;
 
-        } else if (day > daysInMonth[(month - 1)%12]) {
-            day %= daysInMonth[(month - 1)%12];
+        } else if (day > daysInMonth[(month - 1) % 12]) {
+            day %= daysInMonth[(month - 1) % 12];
             month++;
         }
-        return new MyDate(year,month,day).validateMonth();
+        return new MyDate(year, month, day).validateMonth();
     }
 
     private boolean isLeapYear(int year) {
@@ -76,7 +97,7 @@ public class MyDate {
             return true;
         if (this.month > secondDate.month)
             return true;
-        if (this.day>secondDate.day)
+        if (this.day > secondDate.day)
             return true;
         return false;
     }
