@@ -111,7 +111,11 @@ public class InventoryManagementSystem {
 
     private static void nextDay() {
        currentDate = currentDate.nextDay();
-        Product randomItem = inventory.getTable()[(int) (Math.random() * inventory.size)].value;
+        MyHashMap.Node<String, Product> productNode = null;
+        while (productNode == null) {
+            productNode = inventory.getTable()[(int) (Math.random() * inventory.size)];
+        }
+        Product randomItem = productNode.value;
         System.out.println(randomItem);
         int quantity = (int)(randomItem.quantity * Math.random());
         performTransaction(1,randomItem,quantity);
@@ -155,7 +159,7 @@ public class InventoryManagementSystem {
             System.out.println("Item does not exist in the inventory.");
             return;
         }
-        
+
         System.out.print("Enter new quantity: ");
         int newQuantity = scanner.nextInt();
         scanner.nextLine();
@@ -204,7 +208,10 @@ public class InventoryManagementSystem {
     private static void performTransaction(int transactionType,Product p,int quantity) {
         Product item = p;
             if (quantity <= 0 || quantity > item.getQuantity()) {
-                System.out.println("Invalid quantity for sale.");
+                System.out.println("""
+                        !!!!!!!!!!!!!!!!!!!!!!!!!!
+                        Invalid quantity for sale.
+                        !!!!!!!!!!!!!!!!!!!!!!!!!!""");
                 return;
             }
             item.setQuantity(item.getQuantity() - quantity);
@@ -245,7 +252,10 @@ public class InventoryManagementSystem {
 
         if (transactionType == 1) {
             if (quantity <= 0 || quantity > item.getQuantity()) {
-                System.out.println("Invalid quantity for sale.");
+                System.out.println("""
+                        !!!!!!!!!!!!!!!!!!!!!!!!!!
+                        Invalid quantity for sale.
+                        !!!!!!!!!!!!!!!!!!!!!!!!!!  """);
                 return;
             }
             // Perform sale (decrease quantity)
@@ -278,10 +288,8 @@ public class InventoryManagementSystem {
     private static void sortByDateAndDisplay(MyHashMap<MyDate, Product> expiryDateHashMap) {
         for (int i = 0; i < expiryDateHashMap.capacity; i++) {
             MyHashMap.Node<MyDate, Product> n = expiryDateHashMap.getTable()[i];
-            MyDate productExpiry;
             while (n != null) {
-                productExpiry = n.value.getExpirationDate();
-                System.out.println(productExpiry + " " + n.value);
+                System.out.println(n.key + " " + n.value);
                 n = n.next;
             }
 
