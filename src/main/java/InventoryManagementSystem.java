@@ -107,6 +107,17 @@ public class InventoryManagementSystem {
         inventory.put("bracelet",
                 new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024 ,04 ,25)));
         //20 dummy products
+        MyHashMap.Node<String, Product>[] table = inventory.getTable();
+        for (int i = 0; i < table.length; i++) {
+            MyHashMap.Node<String, Product> current = table[i];
+            while (current != null) {
+                Product product = current.value;
+                if (product.getExpirationDate() != null) {
+                    expiryDateHashMap.put(product.getExpirationDate(), product);
+                }
+                current = current.next;
+            }
+        }
     }
 
     private static void nextDay() {
