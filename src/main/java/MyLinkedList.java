@@ -56,7 +56,7 @@ class MyLinkedList<T> {
     public void display() {
         Node last = head;
         while (last != null) {
-            System.out.println(last.toString());
+            System.out.println(last.data);
             last = last.next;
         }
     }
