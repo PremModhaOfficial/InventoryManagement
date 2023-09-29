@@ -293,18 +293,20 @@ public class InventoryManagementSystem {
 
     private static void checkExpiry() {
         // Implement expiry checking logic
-        System.out.println("Items nearing expiration:");
+        System.out.println("Items nearing expiration:\n");
+        int expiredItemsCount = 0;
         for (int i = 0; i < expiryDateHashMap.capacity; i++) {
             MyHashMap.Node<MyDate, Product> n = expiryDateHashMap.getTable()[i];
             while (n != null) {
                 if (currentDate.greaterThan(n.key)) {
-                    System.out.println(n.value.name + " has been expired");
-
+                    System.out.println(n.value.name + " has been expired and Will be removed now...");
+                    inventory.remove(n.value.getName());
+                    expiredItemsCount++;
                 }
                 n = n.next;
             }
-
         }
+        System.out.println("Total of " +expiredItemsCount + " products has been expired and has been removed.");
     }
 
 
