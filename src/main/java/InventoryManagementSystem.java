@@ -68,44 +68,44 @@ public class InventoryManagementSystem {
     }
 
     private static void addDummyItems() {
-        inventory.put("Eraser",
-                new Product("Eraser", 0.79, 250, "Stationary", new MyDate(2023, 07, 10)));
-        inventory.put("Ruler",
-                new Product("Ruler", 1.19, 350, "Stationary", new MyDate(2023, 9, 20)));
-        inventory.put("Highlighter",
-                new Product("Highlighter", 0.89, 300, "Stationary", new MyDate(2023, 10, 25)));
-        inventory.put("Paper Clips",
-                new Product("Paper Clips", 1.29, 200, "Stationary", new MyDate(2023, 11, 30)));
-        inventory.put("Binder Clips",
-                new Product("Binder Clips", 1.99, 150, "Stationary", new MyDate(2023, 12, 05)));
-        inventory.put("Sticky Notes",
-                new Product("Sticky Notes", 2.49, 100, "Stationary", new MyDate(2024, 01, 10)));
-        inventory.put("Tape Dispenser",
-                new Product("Tape Dispenser", 3.99, 75, "Stationary", new MyDate(2024, 02, 15)));
-        inventory.put("Staple Remover",
-                new Product("Staple Remover", 2.99, 50, "Stationary", new MyDate(2024, 03, 20)));
-        inventory.put("Correction Tape",
-                new Product("Correction Tape", 2.79, 100, "Stationary", new MyDate(2024 ,04 ,25)));
-        inventory.put("T-Shirt",
-                new Product("T-Shirt", 14.99, 200, "Clothes", new MyDate(2023, 07, 10)));
-        inventory.put("Jeans",
-                new Product("Jeans", 39.99, 150, "Clothes", new MyDate(2023, 8, 15)));
-        inventory.put("Sweater",
-                new Product("Sweater", 29.99, 100, "Clothes", new MyDate(2023, 9, 20)));
-        inventory.put("Sneakers",
-                new Product("Sneakers", 49.99, 75, "Shoes", new MyDate(2023, 10, 25)));
-        inventory.put("Boots",
-                new Product("Boots", 59.99, 50, "Shoes", new MyDate(2023, 11, 30)));
-        inventory.put("Sandals",
-                new Product("Sandals", 19.99, 100, "Shoes", new MyDate(2023, 12, 05)));
-        inventory.put("Wrist Watch",
-                new Product("Wrist Watch", 199.99, 30, "Accessories", new MyDate(2024, 01, 10)));
-        inventory.put("Necklace",
-                new Product("Necklace", 149.99, 20, "Accessories", new MyDate(2024, 02, 15)));
-        inventory.put("Earrings",
-                new Product("Earrings", 79.99, 50, "Accessories", new MyDate(2024 ,03 ,20)));
-        inventory.put("Bracelet",
-                new Product("Bracelet", 89.99, 40, "Accessories", new MyDate(2024 ,04 ,25)));
+        inventory.put("eraser",
+                new Product("Eraser", 20.00, 250, "Stationary", new MyDate(2023, 07, 10)));
+        inventory.put("ruler",
+                new Product("Ruler", 50.00, 350, "Stationary", new MyDate(2023, 9, 20)));
+        inventory.put("highlighter",
+                new Product("Highlighter", 30.00, 300, "Stationary", new MyDate(2023, 10, 25)));
+        inventory.put("paper clips",
+                new Product("Paper Clips", 40.00, 200, "Stationary", new MyDate(2023, 11, 30)));
+        inventory.put("binder clips",
+                new Product("Binder Clips", 70.00, 150, "Stationary", new MyDate(2023, 12, 05)));
+        inventory.put("sticky notes",
+                new Product("Sticky Notes", 20.00, 100, "Stationary", new MyDate(2024, 01, 10)));
+        inventory.put("tape dispenser",
+                new Product("Tape Dispenser", 150.00, 75, "Stationary", new MyDate(2024, 02, 15)));
+        inventory.put("staple remover",
+                new Product("Staple Remover", 100.00, 50, "Stationary", new MyDate(2024, 03, 20)));
+        inventory.put("correction tape",
+                new Product("Correction Tape", 150.00, 100, "Stationary", new MyDate(2024 ,04 ,25)));
+        inventory.put("t-shirt",
+                new Product("T-Shirt", 500.00, 200, "Clothes", new MyDate(2023, 07, 10)));
+        inventory.put("jeans",
+                new Product("Jeans", 1200.00, 150, "Clothes", new MyDate(2023, 8, 15)));
+        inventory.put("sweater",
+                new Product("Sweater", 800.00, 100, "Clothes", new MyDate(2023, 9, 20)));
+        inventory.put("sneakers",
+                new Product("Sneakers", 2000.00, 75, "Shoes", new MyDate(2023, 10, 25)));
+        inventory.put("boots",
+                new Product("Boots", 4000.00, 50, "Shoes", new MyDate(2023, 11, 30)));
+        inventory.put("sandals",
+                new Product("Sandals", 1500.00, 100, "Shoes", new MyDate(2023, 12, 05)));
+        inventory.put("wrist watch",
+                new Product("Wrist Watch", 6000.00, 30, "Accessories", new MyDate(2024, 01, 10)));
+        inventory.put("necklace",
+                new Product("Necklace", 4000.00, 20, "Accessories", new MyDate(2024, 02, 15)));
+        inventory.put("earrings",
+                new Product("Earrings", 2500.00, 50, "Accessories", new MyDate(2024 ,03 ,20)));
+        inventory.put("bracelet",
+                new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024 ,04 ,25)));
         //20 dummy products
     }
 
@@ -150,14 +150,20 @@ public class InventoryManagementSystem {
         // Implement item update logic
         System.out.print("Enter item name to update: ");
         String name = scanner.nextLine();
-        if (!inventory.containsKey(name)) {
+        if (!inventory.containsKey(name.toLowerCase())) {
             System.out.println("Item does not exist in the inventory.");
             return;
         }
+        
         System.out.print("Enter new quantity: ");
         int newQuantity = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Enter new Price");
+        double newPrice = scanner.nextDouble();
+        scanner.nextLine();
         Product item = inventory.get(name);
         item.setQuantity(newQuantity);
+        item.setPrice(newPrice);
         System.out.println("Item updated successfully.");
     }
 
@@ -270,5 +276,5 @@ public class InventoryManagementSystem {
     private static void viewTransactionHistory() {
         System.out.println("Transaction History:");
         transactionHistory.display();
+       }   
     }
-}

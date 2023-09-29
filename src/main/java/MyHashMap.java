@@ -36,6 +36,7 @@ public class MyHashMap<K, V> {
     }
 
     public boolean containsKey(K key) {
+
         int index = hash(key);
         Node<K, V> node = table[index];
         while (node != null) {
@@ -60,7 +61,7 @@ public class MyHashMap<K, V> {
         for (int i = 0; i < capacity; i++) {
             Node<K, V> node = table[i];
             while (node != null) {
-                System.out.print(node.key + "\n" + node.value + "\n" + Divider + "\n");
+                System.out.print(node.value + "\n" + Divider + "\n");
                 node = node.next;
             }
         }
