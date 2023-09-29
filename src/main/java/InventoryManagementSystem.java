@@ -69,7 +69,7 @@ public class InventoryManagementSystem {
 
     private static void addDummyItems() {
         inventory.put("eraser",
-                new Product("Eraser", 20.00, 250, "Stationary", new MyDate(2023, 07, 10)));
+                new Product("Eraser", 20.00, 250, "Stationary", new MyDate(2023, 7, 10)));
         inventory.put("ruler",
                 new Product("Ruler", 50.00, 350, "Stationary", new MyDate(2023, 9, 20)));
         inventory.put("highlighter",
@@ -77,17 +77,17 @@ public class InventoryManagementSystem {
         inventory.put("paper clips",
                 new Product("Paper Clips", 40.00, 200, "Stationary", new MyDate(2023, 11, 30)));
         inventory.put("binder clips",
-                new Product("Binder Clips", 70.00, 150, "Stationary", new MyDate(2023, 12, 05)));
+                new Product("Binder Clips", 70.00, 150, "Stationary", new MyDate(2023, 12, 5)));
         inventory.put("sticky notes",
-                new Product("Sticky Notes", 20.00, 100, "Stationary", new MyDate(2024, 01, 10)));
+                new Product("Sticky Notes", 20.00, 100, "Stationary", new MyDate(2024, 1, 10)));
         inventory.put("tape dispenser",
-                new Product("Tape Dispenser", 150.00, 75, "Stationary", new MyDate(2024, 02, 15)));
+                new Product("Tape Dispenser", 150.00, 75, "Stationary", new MyDate(2024, 2, 15)));
         inventory.put("staple remover",
-                new Product("Staple Remover", 100.00, 50, "Stationary", new MyDate(2024, 03, 20)));
+                new Product("Staple Remover", 100.00, 50, "Stationary", new MyDate(2024, 3, 20)));
         inventory.put("correction tape",
-                new Product("Correction Tape", 150.00, 100, "Stationary", new MyDate(2024, 04, 25)));
+                new Product("Correction Tape", 150.00, 100, "Stationary", new MyDate(2024, 4, 25)));
         inventory.put("t-shirt",
-                new Product("T-Shirt", 500.00, 200, "Clothes", new MyDate(2023, 07, 10)));
+                new Product("T-Shirt", 500.00, 200, "Clothes", new MyDate(2023, 7, 10)));
         inventory.put("jeans",
                 new Product("Jeans", 1200.00, 150, "Clothes", new MyDate(2023, 8, 15)));
         inventory.put("sweater",
@@ -97,15 +97,15 @@ public class InventoryManagementSystem {
         inventory.put("boots",
                 new Product("Boots", 4000.00, 50, "Shoes", new MyDate(2023, 11, 30)));
         inventory.put("sandals",
-                new Product("Sandals", 1500.00, 100, "Shoes", new MyDate(2023, 12, 05)));
+                new Product("Sandals", 1500.00, 100, "Shoes", new MyDate(2023, 12, 5)));
         inventory.put("wrist watch",
-                new Product("Wrist Watch", 6000.00, 30, "Accessories", new MyDate(2024, 01, 10)));
+                new Product("Wrist Watch", 6000.00, 30, "Accessories", new MyDate(2024, 1, 10)));
         inventory.put("necklace",
-                new Product("Necklace", 4000.00, 20, "Accessories", new MyDate(2024, 02, 15)));
+                new Product("Necklace", 4000.00, 20, "Accessories", new MyDate(2024, 2, 15)));
         inventory.put("earrings",
-                new Product("Earrings", 2500.00, 50, "Accessories", new MyDate(2024, 03, 20)));
+                new Product("Earrings", 2500.00, 50, "Accessories", new MyDate(2024, 3, 20)));
         inventory.put("bracelet",
-                new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024, 04, 25)));
+                new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024, 4, 25)));
         //20 dummy products
         MyHashMap.Node<String, Product>[] table = inventory.getTable();
         for (int i = 0; i < table.length; i++) {
@@ -152,7 +152,7 @@ public class InventoryManagementSystem {
         System.out.print("Enter expiration date (yyyy-MM-dd) or leave blank: ");
         String expirationDate = scanner.nextLine();
 
-        if (expirationDate.equals("") || expirationDate == null) {
+        if (expirationDate.equals("")){
             expirationDate = "NEVER_EXPIRES";
         }
         MyDate expirationDateObject = new MyDate(expirationDate);
@@ -217,19 +217,18 @@ public class InventoryManagementSystem {
      */
 
     private static void performTransaction(int transactionType, Product p, int quantity) {
-        Product item = p;
-        if (quantity <= 0 || quantity > item.getQuantity()) {
+        if (quantity <= 0 || quantity > p.getQuantity()) {
             System.out.println("""
                     !!!!!!!!!!!!!!!!!!!!!!!!!!
                     Invalid quantity for sale.
                     !!!!!!!!!!!!!!!!!!!!!!!!!!""");
             return;
         }
-        item.setQuantity(item.getQuantity() - quantity);
-        System.out.println(quantity + " units of " + item.name + " sold.");
+        p.setQuantity(p.getQuantity() - quantity);
+        System.out.println(quantity + " units of " + p.name + " sold.");
 
         Transaction transactionDescription = new Transaction(
-                item.name, quantity * item.getPrice(), quantity, (transactionType == 1 ? "Sale: " : "Purchase: ")
+                p.name, quantity * p.getPrice(), quantity, (transactionType == 1 ? "Sale: " : "Purchase: ")
         );
         transactionHistory.add(transactionDescription);
     }
@@ -267,7 +266,7 @@ public class InventoryManagementSystem {
                 System.out.println("""
                         !!!!!!!!!!!!!!!!!!!!!!!!!!
                         Invalid quantity for sale.
-                        !!!!!!!!!!!!!!!!!!!!!!!!!!  """);
+                        !!!!!!!!!!!!!!!!!!!!!!!!!!""");
                 return;
             }
             // Perform sale (decrease quantity)
