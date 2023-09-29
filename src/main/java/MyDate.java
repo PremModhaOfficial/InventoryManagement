@@ -70,6 +70,16 @@ public class MyDate {
     public MyDate nextYear() {
         return new MyDate(++year, month, day);
     }
+
+    public boolean greaterThan(MyDate secondDate) {
+        if (this.year > secondDate.year)
+            return true;
+        if (this.month > secondDate.month)
+            return true;
+        if (this.day>secondDate.day)
+            return true;
+        return false;
+    }
 }
 
 class MyDateDemo {

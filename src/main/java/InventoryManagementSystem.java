@@ -85,7 +85,7 @@ public class InventoryManagementSystem {
         inventory.put("staple remover",
                 new Product("Staple Remover", 100.00, 50, "Stationary", new MyDate(2024, 03, 20)));
         inventory.put("correction tape",
-                new Product("Correction Tape", 150.00, 100, "Stationary", new MyDate(2024 ,04 ,25)));
+                new Product("Correction Tape", 150.00, 100, "Stationary", new MyDate(2024, 04, 25)));
         inventory.put("t-shirt",
                 new Product("T-Shirt", 500.00, 200, "Clothes", new MyDate(2023, 07, 10)));
         inventory.put("jeans",
@@ -103,9 +103,9 @@ public class InventoryManagementSystem {
         inventory.put("necklace",
                 new Product("Necklace", 4000.00, 20, "Accessories", new MyDate(2024, 02, 15)));
         inventory.put("earrings",
-                new Product("Earrings", 2500.00, 50, "Accessories", new MyDate(2024 ,03 ,20)));
+                new Product("Earrings", 2500.00, 50, "Accessories", new MyDate(2024, 03, 20)));
         inventory.put("bracelet",
-                new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024 ,04 ,25)));
+                new Product("Bracelet", 1500.00, 40, "Accessories", new MyDate(2024, 04, 25)));
         //20 dummy products
         MyHashMap.Node<String, Product>[] table = inventory.getTable();
         for (int i = 0; i < table.length; i++) {
@@ -121,15 +121,15 @@ public class InventoryManagementSystem {
     }
 
     private static void nextDay() {
-       currentDate = currentDate.nextDay();
+        currentDate = currentDate.nextDay();
         MyHashMap.Node<String, Product> productNode = null;
         while (productNode == null) {
             productNode = inventory.getTable()[(int) (Math.random() * inventory.size)];
         }
         Product randomItem = productNode.value;
         System.out.println(randomItem);
-        int quantity = (int)(randomItem.quantity * Math.random());
-        performTransaction(1,randomItem,quantity);
+        int quantity = (int) (randomItem.quantity * Math.random());
+        performTransaction(1, randomItem, quantity);
     }
 
     private static void addItem() {
@@ -216,23 +216,24 @@ public class InventoryManagementSystem {
      * System.out.println("Expiration Date: " + dateFormat.format(item.getExpirationDate()));
      */
 
-    private static void performTransaction(int transactionType,Product p,int quantity) {
+    private static void performTransaction(int transactionType, Product p, int quantity) {
         Product item = p;
-            if (quantity <= 0 || quantity > item.getQuantity()) {
-                System.out.println("""
-                        !!!!!!!!!!!!!!!!!!!!!!!!!!
-                        Invalid quantity for sale.
-                        !!!!!!!!!!!!!!!!!!!!!!!!!!""");
-                return;
-            }
-            item.setQuantity(item.getQuantity() - quantity);
-            System.out.println(quantity + " units of " + item.name + " sold.");
+        if (quantity <= 0 || quantity > item.getQuantity()) {
+            System.out.println("""
+                    !!!!!!!!!!!!!!!!!!!!!!!!!!
+                    Invalid quantity for sale.
+                    !!!!!!!!!!!!!!!!!!!!!!!!!!""");
+            return;
+        }
+        item.setQuantity(item.getQuantity() - quantity);
+        System.out.println(quantity + " units of " + item.name + " sold.");
 
         Transaction transactionDescription = new Transaction(
                 item.name, quantity * item.getPrice(), quantity, (transactionType == 1 ? "Sale: " : "Purchase: ")
         );
         transactionHistory.add(transactionDescription);
     }
+
     private static void performTransaction() {
         System.out.println("Transaction Types:");
         System.out.println("1. Sale (Decrease quantity)");
@@ -293,22 +294,22 @@ public class InventoryManagementSystem {
     private static void checkExpiry() {
         // Implement expiry checking logic
         System.out.println("Items nearing expiration:");
-        sortByDateAndDisplay(expiryDateHashMap);
-    }
-
-    private static void sortByDateAndDisplay(MyHashMap<MyDate, Product> expiryDateHashMap) {
         for (int i = 0; i < expiryDateHashMap.capacity; i++) {
             MyHashMap.Node<MyDate, Product> n = expiryDateHashMap.getTable()[i];
             while (n != null) {
-                System.out.println(n.key + " " + n.value);
+                if (currentDate.greaterThan(n.key)) {
+                    System.out.println(n.value.name + " has been expired");
+
+                }
                 n = n.next;
             }
 
         }
     }
 
+
     private static void viewTransactionHistory() {
         System.out.println("Transaction History:");
         transactionHistory.display();
-       }
     }
+}
